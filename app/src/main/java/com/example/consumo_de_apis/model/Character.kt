@@ -6,8 +6,9 @@ import java.util.Date
 data class Personage (
     var name: String,
     var occupation: String,
+    var age: Int,
     var gender: String,
-    var birthday: Date,
+    var birthday: Date?,
     var status: String,
     var description: String,
     @DrawableRes var image: Int
