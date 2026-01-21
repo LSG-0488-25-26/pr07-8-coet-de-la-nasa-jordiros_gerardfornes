@@ -1,34 +1,123 @@
 package com.example.consumo_de_apis.view
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 
 @Composable
 fun DetailsView(id: Int, viewModel: ConsumoViewModel) {
-    val character = viewModel.getCharacterById(id)
-    character?.let {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Image(
-                painter = painterResource(id = it.image),
-                contentDescription = it.name,
-                modifier = Modifier.size(250.dp)
-            )
+    val personage = viewModel.getCharacterById(id)
+    val colorStatus = viewModel.getStatuesAlive(id)
 
-            Text(it.name, fontSize = 24.sp)
-            Text(it.occupation)
-            Text(it.status)
-            Text(it.description)
+    if (personage == null) {
+        Text("Personaje no encontrado")
+        return
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xffF1F9FF))
+    ) {
+        Card(
+            shape = RoundedCornerShape(16.dp),
+            border = BorderStroke(2.dp, Color(0xffc3c3c3)),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top,
+                modifier = Modifier
+                    .background(color = Color.White)
+                    .padding(10.dp)
+                    .fillMaxSize()
+            ) {
+                Image(
+                    painter = painterResource(id = personage.image),
+                    contentDescription = personage.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(300.dp)
+                        .padding(10.dp)
+                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Text(
+                        color = Color.Black,
+                        text = personage.name,
+                        fontSize = 30.sp
+                    )
+                    Text(
+                        color = Color.Gray,
+                        text = personage.occupation,
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+                Spacer(modifier = Modifier.padding(10.dp))
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState())
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 10.dp)
+                    ) {
+                        Text(
+                            color = Color.Black,
+                            text = "Edad: " + personage.age,
+                            fontSize = 20.sp,
+                        )
+                        Text(
+                            color = Color.Black,
+                            text = "Genero: " + personage.gender,
+                            fontSize = 20.sp,
+                        )
+                        Text(
+                            color = Color.Black,
+                            text = "Cumpleaños: " + personage.birthday,
+                            fontSize = 20.sp,
+                        )
+                        Text(
+                            color = Color(colorStatus),
+                            text = personage.status,
+                            fontSize = 20.sp,
+                        )
+                        Text(
+                            color = Color.Black,
+                            text = "Descripción: " + personage.description,
+                            fontSize = 20.sp,
+                        )
+                    }
+                }
+            }
         }
     }
 }

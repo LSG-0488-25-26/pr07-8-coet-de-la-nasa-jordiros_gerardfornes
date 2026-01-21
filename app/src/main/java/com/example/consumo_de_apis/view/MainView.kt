@@ -55,8 +55,9 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
         ) {
             items(personage) { personage ->
                 PersonageItem(
-                    personage,
-                    navController
+                    personage = personage,
+                    navController = navController,
+                    consumoViewModel = consumoViewModel
                 )
             }
         }
@@ -64,7 +65,9 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
 }
 
 @Composable
-fun PersonageItem(personage: Personage, navController: NavController) {
+fun PersonageItem(personage: Personage, navController: NavController, consumoViewModel: ConsumoViewModel) {
+    val colorStatus = consumoViewModel.getStatuesAlive(personage.id)
+
     Card(
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(2.dp, Color(0xffc3c3c3)),
@@ -116,7 +119,7 @@ fun PersonageItem(personage: Personage, navController: NavController) {
                         fontSize = 15.sp,
                     )
                     Text(
-                        color = Color.Gray,
+                        color = Color(colorStatus),
                         text = personage.status,
                         fontSize = 15.sp
                     )
@@ -125,5 +128,3 @@ fun PersonageItem(personage: Personage, navController: NavController) {
         }
     }
 }
-
-
