@@ -34,7 +34,7 @@ import com.example.consumo_de_apis.nav.Routes
 
 @Composable
 fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
-    val personage = consumoViewModel.getCharacterList()
+    val personage = consumoViewModel.characters
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
