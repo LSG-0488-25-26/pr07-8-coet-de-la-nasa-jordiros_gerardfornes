@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import java.util.Date
 
 data class Personage (
+    var id: Int,
     var name: String,
     var occupation: String,
     var age: Int,
