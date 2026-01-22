@@ -9,11 +9,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiInterface {
 
     @GET("characters")
-    suspend fun getCharacters(): Response<CharacterResponse>
+    suspend fun getCharacters(
+        @Query("page") pagina: Int
+    ): Response<CharacterResponse>
 
     @GET("characters/{id}")
     suspend fun getCharacterDetails(@Path("id") id: Int): Response<Personage>

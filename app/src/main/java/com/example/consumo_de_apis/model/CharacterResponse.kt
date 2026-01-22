@@ -3,5 +3,6 @@ import com.google.gson.annotations.SerializedName
 
 data class CharacterResponse(
     @SerializedName("results")
-    val results: List<Personage>
+    val results: List<Personage>,
+    val pages: String
 )

@@ -90,7 +90,7 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
                 Text(text = "<")
             }
             Text(
-                text = pagina.toString() + "/100",
+                text = pagina.toString() + "/${consumoViewModel.maxPaginas}",
                 color = Color.Black,
                 modifier = Modifier.padding(horizontal = 30.dp)
             )
