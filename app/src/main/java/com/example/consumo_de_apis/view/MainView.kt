@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -191,7 +190,7 @@ fun PersonageItem(personage: Personage, navController: NavController, consumoVie
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
             modifier = Modifier
-                .height(350.dp)
+                .height(375.dp)
                 .fillMaxWidth()
                 .background(color = Color.White)
                 .padding(10.dp)
@@ -213,7 +212,7 @@ fun PersonageItem(personage: Personage, navController: NavController, consumoVie
                 )
             }
             GlideImage(
-                model = personage.imageUrl, // Propietat calculada al Model
+                model = personage.imageUrl,
                 contentDescription = personage.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
