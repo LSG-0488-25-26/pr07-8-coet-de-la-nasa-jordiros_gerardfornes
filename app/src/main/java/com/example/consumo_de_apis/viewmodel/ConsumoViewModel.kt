@@ -15,6 +15,7 @@ import com.example.consumo_de_apis.model.CharacterResponse
 class ConsumoViewModel: ViewModel() {
     private val repository = Repository()
     private var pagina_actual: Int = 1
+    private var max_paginas: Int = 100  // BUSCAR NUMERO DE PAGINAS MÁXIMO EN LA API
 
     private val _characters = mutableStateListOf<Personage>()
     val characters: List<Personage> = _characters
@@ -67,12 +68,12 @@ class ConsumoViewModel: ViewModel() {
         return if (status == "Alive") Color.GREEN else Color.RED
     }
 
-    fun ingrementarPagina(pagina: Int): Int { // BUSCAR NUMERO DE PAGINAS MÁXIMO EN LA API
-        if (pagina < 100) {
+    fun ingrementarPagina(pagina: Int): Int {
+        if (pagina < max_paginas) {
             pagina_actual = pagina + 1
             return pagina + 1
         }
-        else return 100
+        else return max_paginas
     }
 
     fun decrementarPagina(pagina: Int): Int {
