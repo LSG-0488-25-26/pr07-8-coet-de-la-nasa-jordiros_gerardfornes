@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,6 +46,9 @@ import com.bumptech.glide.integration.compose.GlideImage
 fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
     val personage = consumoViewModel.characters
     var pagina by rememberSaveable { mutableStateOf(1) }
+    var opcion_ventana by rememberSaveable { mutableStateOf(true) } // true: ventana personages || true: ventana favoritos
+    var color_personages = consumoViewModel.cambiarColor(opcion_ventana)
+    var color_favorito = consumoViewModel.cambiarColor(!opcion_ventana)
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -56,22 +60,53 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
         Image(
             painter = painterResource(id = com.example.consumo_de_apis.R.drawable.titulo),
             contentDescription = "titulo",
-            modifier = Modifier.size(250.dp)
+            modifier = Modifier.size(200.dp)
         )
+        Row (
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Button(
+                onClick = {
+                    opcion_ventana = true
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(color_personages),
+                    contentColor = Color.Black
+                )
+            ) {
+                Text(text = "Personages")
+            }
+            Spacer(Modifier.padding(20.dp))
+            Button(
+                onClick = {
+                    opcion_ventana = false
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(color_favorito),
+                    contentColor = Color.Black
+                )
+            ) {
+                Text(text = "Favoritos")
+            }
+        }
         LazyVerticalGrid(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             columns = GridCells.Fixed(2),
             modifier = Modifier
                 .padding(20.dp, 0.dp)
-                .height(500.dp)
+                .height(480.dp)
         ) {
-            items(personage) { personage ->
-                PersonageItem(
-                    personage = personage,
-                    navController = navController,
-                    consumoViewModel = consumoViewModel
-                )
+            if (opcion_ventana) {
+                items(personage) { personage ->
+                    PersonageItem(
+                        personage = personage,
+                        navController = navController,
+                        consumoViewModel = consumoViewModel
+                    )
+                }
+            } else {
+                /* LISTA DE PERSONAGES FAVORITOS */
             }
         }
         Row(
@@ -79,11 +114,12 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxSize()
+                .padding(10.dp)
         ) {
             Button(
                 onClick = { pagina = consumoViewModel.decrementarPagina(pagina) },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFFFD600),
+                    containerColor = Color.Yellow,
                     contentColor = Color.Black
                 )
             ) {
@@ -92,12 +128,13 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
             Text(
                 text = pagina.toString() + "/100",
                 color = Color.Black,
-                modifier = Modifier.padding(horizontal = 30.dp)
+                modifier = Modifier
+                    .padding(horizontal = 30.dp)
             )
             Button(
                 onClick = { pagina = consumoViewModel.ingrementarPagina(pagina) },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFFFD600),
+                    containerColor = Color.Yellow,
                     contentColor = Color.Black
                 )
             ) {

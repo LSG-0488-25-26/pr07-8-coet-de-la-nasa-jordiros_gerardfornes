@@ -11,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.consumo_de_apis.model.Personage
 import com.example.consumo_de_apis.repository.Repository
 import kotlinx.coroutines.launch
-import com.example.consumo_de_apis.model.CharacterResponse
 class ConsumoViewModel: ViewModel() {
     private val repository = Repository()
     private var pagina_actual: Int = 1
@@ -82,5 +81,8 @@ class ConsumoViewModel: ViewModel() {
             return pagina - 1
         }
         else return 1
+    }
+    fun cambiarColor(opcion_ventana: Boolean): Int {
+        return if (opcion_ventana) Color.YELLOW else Color.LTGRAY
     }
 }
