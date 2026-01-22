@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -65,7 +66,7 @@ fun DetailsView(id: Int, viewModel: ConsumoViewModel) {
                     .fillMaxSize()
             ) {
                 GlideImage(
-                    model = personage.imageUrl, // Fem servir la URL del model
+                    model = personage.imageUrl,
                     contentDescription = personage.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -116,11 +117,18 @@ fun DetailsView(id: Int, viewModel: ConsumoViewModel) {
                             text = "Cumpleaños: " + personage.birthday,
                             fontSize = 20.sp,
                         )
-                        Text(
-                            color = Color(colorStatus),
-                            text = personage.status,
-                            fontSize = 20.sp,
-                        )
+                        Row {
+                            Text(
+                                color = Color.Black,
+                                text = "Estado: ",
+                                fontSize = 20.sp,
+                            )
+                            Text(
+                                color = Color(colorStatus),
+                                text = personage.status,
+                                fontSize = 20.sp,
+                            )
+                        }
                         Text(
                             color = Color.Black,
                             text = "Descripción: " + personage.description,

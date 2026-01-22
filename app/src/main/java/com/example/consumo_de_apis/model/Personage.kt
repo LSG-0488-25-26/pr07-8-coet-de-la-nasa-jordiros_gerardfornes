@@ -1,8 +1,6 @@
 package com.example.consumo_de_apis.model
 
-import androidx.annotation.DrawableRes
 import com.google.gson.annotations.SerializedName
-import java.util.Date
 
 data class Personage (
     var id: Int,

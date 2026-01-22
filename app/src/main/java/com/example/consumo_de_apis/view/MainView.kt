@@ -26,10 +26,12 @@ import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -117,6 +119,16 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
                 .padding(10.dp)
         ) {
             Button(
+                onClick = { pagina = consumoViewModel.irAPrimeraPagina() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Yellow,
+                    contentColor = Color.Black
+                ),
+                modifier = Modifier.padding(end = 20.dp)
+            ) {
+                Text(text = "<<")
+            }
+            Button(
                 onClick = { pagina = consumoViewModel.decrementarPagina(pagina) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Yellow,
@@ -139,6 +151,16 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
                 )
             ) {
                 Text(text = ">")
+            }
+            Button(
+                onClick = { pagina = consumoViewModel.irAUltimaPagina() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Yellow,
+                    contentColor = Color.Black
+                ),
+                modifier = Modifier.padding(start = 20.dp)
+            ) {
+                Text(text = ">>")
             }
         }
     }
