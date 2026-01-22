@@ -5,7 +5,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,12 +28,10 @@ import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -43,10 +43,12 @@ import androidx.compose.ui.unit.sp
 import com.example.consumo_de_apis.nav.Routes
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.consumo_de_apis.R
 
 @Composable
 fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
     val personage = consumoViewModel.characters
+
     var pagina by rememberSaveable { mutableStateOf(1) }
     var opcion_ventana by rememberSaveable { mutableStateOf(true) } // true: ventana personages || true: ventana favoritos
     var color_personages = consumoViewModel.cambiarColor(opcion_ventana)
@@ -60,7 +62,7 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
             .fillMaxSize()
     ) {
         Image(
-            painter = painterResource(id = com.example.consumo_de_apis.R.drawable.titulo),
+            painter = painterResource(id = R.drawable.titulo),
             contentDescription = "titulo",
             modifier = Modifier.size(200.dp)
         )
@@ -171,6 +173,12 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
 fun PersonageItem(personage: Personage, navController: NavController, consumoViewModel: ConsumoViewModel) {
     val colorStatus = consumoViewModel.getStatusColor(personage.status)
 
+    var favorito by rememberSaveable { mutableStateOf(false) }
+    var imagen_favorito by rememberSaveable { mutableStateOf(R.drawable.favorito_off) }
+
+    if (favorito) imagen_favorito = R.drawable.favorito_on
+    else imagen_favorito = R.drawable.favorito_off
+
     Card(
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(2.dp, Color(0xffc3c3c3)),
@@ -181,13 +189,29 @@ fun PersonageItem(personage: Personage, navController: NavController, consumoVie
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
             modifier = Modifier
                 .height(350.dp)
                 .fillMaxWidth()
                 .background(color = Color.White)
                 .padding(10.dp)
         ) {
+            Button(
+                onClick = { favorito = !favorito },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = Color.Transparent
+                ),
+                elevation = ButtonDefaults.buttonElevation(0.dp),
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Image(
+                    painter = painterResource(id = imagen_favorito),
+                    contentDescription = "Favorito",
+                    modifier = Modifier.size(30.dp)
+                )
+            }
             GlideImage(
                 model = personage.imageUrl, // Propietat calculada al Model
                 contentDescription = personage.name,

@@ -11,7 +11,7 @@ data class Personage (
     @SerializedName("birthdate")
     var birthday: String?,
     var status: String,
-    var description: String?,
+    var description: String?
 ) {
     val imageUrl: String
         get() = "https://cdn.thesimpsonsapi.com/500/character/$id.webp"
