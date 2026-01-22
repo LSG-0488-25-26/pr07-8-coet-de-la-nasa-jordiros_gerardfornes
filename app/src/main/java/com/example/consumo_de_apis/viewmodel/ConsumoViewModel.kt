@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import com.example.consumo_de_apis.model.CharacterResponse
 class ConsumoViewModel: ViewModel() {
     private val repository = Repository()
+    private var pagina_actual: Int = 1
 
     private val _characters = mutableStateListOf<Personage>()
     val characters: List<Personage> = _characters
@@ -64,5 +65,21 @@ class ConsumoViewModel: ViewModel() {
 
     fun getStatusColor(status: String): Int {
         return if (status == "Alive") Color.GREEN else Color.RED
+    }
+
+    fun ingrementarPagina(pagina: Int): Int { // BUSCAR NUMERO DE PAGINAS MÁXIMO EN LA API
+        if (pagina < 100) {
+            pagina_actual = pagina + 1
+            return pagina + 1
+        }
+        else return 100
+    }
+
+    fun decrementarPagina(pagina: Int): Int {
+        if (pagina > 1) {
+            pagina_actual = pagina - 1
+            return pagina - 1
+        }
+        else return 1
     }
 }

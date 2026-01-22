@@ -80,7 +80,8 @@ fun DetailsView(id: Int, viewModel: ConsumoViewModel) {
                     Text(
                         color = Color.Black,
                         text = personage.name,
-                        fontSize = 30.sp
+                        fontSize = 30.sp,
+                        textAlign = TextAlign.Center,
                     )
                     Text(
                         color = Color.Gray,

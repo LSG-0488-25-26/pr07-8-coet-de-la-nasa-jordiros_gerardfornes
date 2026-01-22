@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,7 +26,13 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
@@ -37,11 +44,14 @@ import com.bumptech.glide.integration.compose.GlideImage
 @Composable
 fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
     val personage = consumoViewModel.characters
+    var pagina by rememberSaveable { mutableStateOf(1) }
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
-        modifier = Modifier.background(Color(0xffF1F9FF))
+        modifier = Modifier
+            .background(Color(0xffF1F9FF))
+            .fillMaxSize()
     ) {
         Image(
             painter = painterResource(id = com.example.consumo_de_apis.R.drawable.titulo),
@@ -54,6 +64,7 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
             columns = GridCells.Fixed(2),
             modifier = Modifier
                 .padding(20.dp, 0.dp)
+                .height(500.dp)
         ) {
             items(personage) { personage ->
                 PersonageItem(
@@ -61,6 +72,36 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
                     navController = navController,
                     consumoViewModel = consumoViewModel
                 )
+            }
+        }
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Button(
+                onClick = { pagina = consumoViewModel.decrementarPagina(pagina) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFFD600),
+                    contentColor = Color.Black
+                )
+            ) {
+                Text(text = "<")
+            }
+            Text(
+                text = pagina.toString() + "/100",
+                color = Color.Black,
+                modifier = Modifier.padding(horizontal = 30.dp)
+            )
+            Button(
+                onClick = { pagina = consumoViewModel.ingrementarPagina(pagina) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFFD600),
+                    contentColor = Color.Black
+                )
+            ) {
+                Text(text = ">")
             }
         }
     }
@@ -83,7 +124,7 @@ fun PersonageItem(personage: Personage, navController: NavController, consumoVie
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .height(300.dp)
+                .height(350.dp)
                 .fillMaxWidth()
                 .background(color = Color.White)
                 .padding(10.dp)
@@ -103,7 +144,8 @@ fun PersonageItem(personage: Personage, navController: NavController, consumoVie
                 Text(
                     color = Color.Black,
                     text = personage.name,
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center,
                 )
                 Text(
                     color = Color.Gray,
