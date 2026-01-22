@@ -31,6 +31,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.consumo_de_apis.nav.Routes
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 
 @Composable
 fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
@@ -64,9 +66,10 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class) // Necessari per utilitzar GlideImage
 @Composable
 fun PersonageItem(personage: Personage, navController: NavController, consumoViewModel: ConsumoViewModel) {
-    val colorStatus = consumoViewModel.getStatuesAlive(personage.id)
+    val colorStatus = consumoViewModel.getStatusColor(personage.status)
 
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -85,8 +88,8 @@ fun PersonageItem(personage: Personage, navController: NavController, consumoVie
                 .background(color = Color.White)
                 .padding(10.dp)
         ) {
-            Image(
-                painter = painterResource(id = personage.image),
+            GlideImage(
+                model = personage.imageUrl, // Propietat calculada al Model
                 contentDescription = personage.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

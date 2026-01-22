@@ -1,7 +1,6 @@
 package com.example.consumo_de_apis.view
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,16 +23,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import androidx.compose.runtime.LaunchedEffect
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun DetailsView(id: Int, viewModel: ConsumoViewModel) {
-    val personage = viewModel.getCharacterById(id)
-    val colorStatus = viewModel.getStatuesAlive(id)
+
+    LaunchedEffect(id) {
+        viewModel.fetchCharacterDetails(id)
+    }
+
+    val personage = viewModel.personageDetail
 
     if (personage == null) {
-        Text("Personaje no encontrado")
+        Text("Cargando datos...", modifier = Modifier.padding(20.dp))
         return
     }
+
+    val colorStatus = viewModel.getStatusColor(personage.status)
 
     Column(
         modifier = Modifier
@@ -55,14 +64,15 @@ fun DetailsView(id: Int, viewModel: ConsumoViewModel) {
                     .padding(10.dp)
                     .fillMaxSize()
             ) {
-                Image(
-                    painter = painterResource(id = personage.image),
+                GlideImage(
+                    model = personage.imageUrl, // Fem servir la URL del model
                     contentDescription = personage.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(300.dp)
                         .padding(10.dp)
                 )
+
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(10.dp)
