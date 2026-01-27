@@ -10,11 +10,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.consumo_de_apis.model.Personage
 import com.example.consumo_de_apis.repository.Repository
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ConsumoViewModel: ViewModel() {
     private val repository = Repository()
     private var pagina_actual: Int = 1
+
+    val favoritos = repository.getFavoritos()
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            emptyList()
+        )
 
     var maxPaginas by mutableStateOf("1")
     private val _characters = mutableStateListOf<Personage>()
@@ -98,5 +107,17 @@ class ConsumoViewModel: ViewModel() {
     }
     fun cambiarColor(opcion_ventana: Boolean): Int {
         return if (opcion_ventana) Color.YELLOW else Color.LTGRAY
+    }
+
+    fun cambiarFavorito(personage: Personage) {
+        viewModelScope.launch {
+            if (personage.esFavorito) {
+                repository.deletePersonageFavorito(personage)
+            } else {
+                repository.setPersonageFavorito(
+                    personage.copy(esFavorito = true)
+                )
+            }
+        }
     }
 }

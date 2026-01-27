@@ -31,6 +31,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -39,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.core.os.persistableBundleOf
 import com.example.consumo_de_apis.nav.Routes
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -47,6 +49,7 @@ import com.example.consumo_de_apis.R
 @Composable
 fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
     val personage = consumoViewModel.characters
+    val favoritos by consumoViewModel.favoritos.collectAsState()
 
     var pagina by rememberSaveable { mutableStateOf(1) }
     var opcion_ventana by rememberSaveable { mutableStateOf(true) } // true: ventana personages || true: ventana favoritos
@@ -109,59 +112,67 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
                     )
                 }
             } else {
-                /* LISTA DE PERSONAGES FAVORITOS */
+                items(favoritos) { personage ->
+                    PersonageItem(
+                        personage = personage,
+                        navController = navController,
+                        consumoViewModel = consumoViewModel
+                    )
+                }
             }
         }
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-        ) {
-            Button(
-                onClick = { pagina = consumoViewModel.irAPrimeraPagina() },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Yellow,
-                    contentColor = Color.Black
-                ),
-                modifier = Modifier.padding(end = 20.dp)
-            ) {
-                Text(text = "<<")
-            }
-            Button(
-                onClick = { pagina = consumoViewModel.decrementarPagina(pagina) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Yellow,
-                    contentColor = Color.Black
-                )
-            ) {
-                Text(text = "<")
-            }
-            Text(
-                text = pagina.toString() + "/${consumoViewModel.maxPaginas}",
-                color = Color.Black,
+        if (opcion_ventana) {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(horizontal = 30.dp)
-            )
-            Button(
-                onClick = { pagina = consumoViewModel.ingrementarPagina(pagina) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Yellow,
-                    contentColor = Color.Black
+                    .fillMaxSize()
+                    .padding(10.dp)
+            ) {
+                Button(
+                    onClick = { pagina = consumoViewModel.irAPrimeraPagina() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Yellow,
+                        contentColor = Color.Black
+                    ),
+                    modifier = Modifier.padding(end = 20.dp)
+                ) {
+                    Text(text = "<<")
+                }
+                Button(
+                    onClick = { pagina = consumoViewModel.decrementarPagina(pagina) },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Yellow,
+                        contentColor = Color.Black
+                    )
+                ) {
+                    Text(text = "<")
+                }
+                Text(
+                    text = pagina.toString() + "/${consumoViewModel.maxPaginas}",
+                    color = Color.Black,
+                    modifier = Modifier
+                        .padding(horizontal = 30.dp)
                 )
-            ) {
-                Text(text = ">")
-            }
-            Button(
-                onClick = { pagina = consumoViewModel.irAUltimaPagina() },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Yellow,
-                    contentColor = Color.Black
-                ),
-                modifier = Modifier.padding(start = 20.dp)
-            ) {
-                Text(text = ">>")
+                Button(
+                    onClick = { pagina = consumoViewModel.ingrementarPagina(pagina) },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Yellow,
+                        contentColor = Color.Black
+                    )
+                ) {
+                    Text(text = ">")
+                }
+                Button(
+                    onClick = { pagina = consumoViewModel.irAUltimaPagina() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Yellow,
+                        contentColor = Color.Black
+                    ),
+                    modifier = Modifier.padding(start = 20.dp)
+                ) {
+                    Text(text = ">>")
+                }
             }
         }
     }
@@ -171,12 +182,9 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
 @Composable
 fun PersonageItem(personage: Personage, navController: NavController, consumoViewModel: ConsumoViewModel) {
     val colorStatus = consumoViewModel.getStatusColor(personage.status)
-
-    var favorito by rememberSaveable { mutableStateOf(false) }
-    var imagen_favorito by rememberSaveable { mutableStateOf(R.drawable.favorito_off) }
-
-    if (favorito) imagen_favorito = R.drawable.favorito_on
-    else imagen_favorito = R.drawable.favorito_off
+    var imagen_favorito =
+        if (personage.esFavorito) { R.drawable.favorito_on }
+        else { R.drawable.favorito_off }
 
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -196,7 +204,9 @@ fun PersonageItem(personage: Personage, navController: NavController, consumoVie
                 .padding(10.dp)
         ) {
             Button(
-                onClick = { favorito = !favorito },
+                onClick = {
+                    consumoViewModel.cambiarFavorito(personage)
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
                     contentColor = Color.Transparent
