@@ -6,15 +6,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.consumo_de_apis.model.Personage
+import com.example.consumo_de_apis.nav.BottomNavigationScreens
 import com.example.consumo_de_apis.repository.Repository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ConsumoViewModel: ViewModel() {
+    private val _bottomNavigationItems = MutableLiveData<List<BottomNavigationScreens>>(emptyList())
+    public val bottomNavigationItems: LiveData<List<BottomNavigationScreens>> = _bottomNavigationItems
     private val repository = Repository()
     private var pagina_actual: Int = 1
 
