@@ -12,6 +12,7 @@ import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 @Composable
 fun ScaffoldView(viewModel: ConsumoViewModel, navController: NavHostController){
     Scaffold (
+        // AGREGAR SEARCHBAR
         bottomBar = { MyBottomBar(viewModel, navController) }
     )
     { paddingValues ->
