@@ -17,9 +17,16 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class ConsumoViewModel: ViewModel() {
+class ConsumoViewModel: ViewModel {
     private val _bottomNavigationItems = MutableLiveData<List<BottomNavigationScreens>>(emptyList())
     public val bottomNavigationItems: LiveData<List<BottomNavigationScreens>> = _bottomNavigationItems
+
+    constructor() : super() {
+        this._bottomNavigationItems.value = listOf(
+            BottomNavigationScreens.Main,
+            BottomNavigationScreens.Favorites
+        )
+    }
     private val repository = Repository()
     private var pagina_actual: Int = 1
 
@@ -110,18 +117,20 @@ class ConsumoViewModel: ViewModel() {
         loadCharacters()
         return pagina_actual
     }
-    fun cambiarColor(opcion_ventana: Boolean): Int {
-        return if (opcion_ventana) Color.YELLOW else Color.LTGRAY
-    }
 
     fun cambiarFavorito(personage: Personage) {
         viewModelScope.launch {
-            if (personage.esFavorito) {
-                repository.deletePersonageFavorito(personage)
+            val actualizado = personage.copy(esFavorito = !personage.esFavorito)
+
+            if (actualizado.esFavorito) {
+                repository.setPersonageFavorito(actualizado)
             } else {
-                repository.setPersonageFavorito(
-                    personage.copy(esFavorito = true)
-                )
+                repository.deletePersonageFavorito(personage)
+            }
+
+            val index = _characters.indexOfFirst { it.id == personage.id }
+            if (index != -1) {
+                _characters[index] = actualizado
             }
         }
     }

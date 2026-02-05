@@ -10,6 +10,6 @@ sealed class BottomNavigationScreens(
     val icon: ImageVector,
     val label: String
 ){
-    object Main: BottomNavigationScreens(Routes.Main.route, Icons.Filled.Home, "Main")
-    object MFavorites: BottomNavigationScreens(Routes.Main.route, Icons.Filled.Favorite, "Favorites")
+    object Main: BottomNavigationScreens(Routes.Home.route, Icons.Filled.Home, "Main")
+    object Favorites: BottomNavigationScreens(Routes.Favorites.route, Icons.Filled.Favorite, "Favorites")
 }

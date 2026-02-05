@@ -13,7 +13,7 @@ import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
 @Composable
 fun ScaffoldView(viewModel: ConsumoViewModel, navController: NavHostController, searchBarViewModel: SearchBarViewModel){
     Scaffold (
-        bottomBar = { MyBottomBar(viewModel, navController) }
+        bottomBar = { MyBottomBar(consumoViewModel, navController) }
     )
     { paddingValues ->
         Box(

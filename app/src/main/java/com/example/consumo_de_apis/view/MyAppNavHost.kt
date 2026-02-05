@@ -1,6 +1,5 @@
 package com.example.consumo_de_apis.view
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -16,7 +15,7 @@ import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
 fun MyAppNavHost(navController: NavController, consumoViewModel: ConsumoViewModel, searchBarViewModel: SearchBarViewModel) {
     NavHost(
         navController = navController as NavHostController,
-        startDestination = Routes.Main.route
+        startDestination = Routes.Home.route
     ) {
         composable(Routes.Main.route) {
             MainView(consumoViewModel, navController, searchBarViewModel)

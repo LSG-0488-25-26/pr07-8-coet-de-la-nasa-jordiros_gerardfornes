@@ -1,48 +1,46 @@
 package com.example.consumo_de_apis.view
 
-import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
-import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
-import androidx.core.os.persistableBundleOf
-import com.example.consumo_de_apis.nav.Routes
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
+import androidx.navigation.NavController
 import com.example.consumo_de_apis.R
-import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
 
 @Composable
-fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController, searchBarViewModel: SearchBarViewModel) {
+fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, mostrarFavoritos: Boolean) {
     val personage = consumoViewModel.characters
     val favoritos by consumoViewModel.favoritos.collectAsState()
-
     var pagina by rememberSaveable { mutableStateOf(1) }
-    var opcion_ventana by rememberSaveable { mutableStateOf(true) } // true: ventana personages || true: ventana favoritos
-    var color_personages = consumoViewModel.cambiarColor(opcion_ventana)
-    var color_favorito = consumoViewModel.cambiarColor(!opcion_ventana)
+    val gridState = rememberLazyGridState()
 
-    val searchText by searchBarViewModel.searchedText.observeAsState("")
-
-    val personatgesFiltrats = if (searchText.isBlank()) {
-        personage
-    } else {
-        personage.filter { it.name.contains(searchText, ignoreCase = true) }
+    LaunchedEffect(pagina, mostrarFavoritos) {
+        gridState.scrollToItem(0)
     }
 
     Column (
@@ -52,49 +50,23 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController, s
             .background(Color(0xffF1F9FF))
             .fillMaxSize()
     ) {
-        MySearchBarView(searchBarViewModel)
         Image(
             painter = painterResource(id = R.drawable.titulo),
             contentDescription = "titulo",
-            modifier = Modifier.size(200.dp)
+            modifier = Modifier.size(150.dp)
         )
-        Row (
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Button(
-                onClick = {
-                    opcion_ventana = true
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(color_personages),
-                    contentColor = Color.Black
-                )
-            ) {
-                Text(text = "Personages")
-            }
-            Spacer(Modifier.padding(20.dp))
-            Button(
-                onClick = {
-                    opcion_ventana = false
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(color_favorito),
-                    contentColor = Color.Black
-                )
-            ) {
-                Text(text = "Favoritos")
-            }
-        }
+
         LazyVerticalGrid(
+            state = gridState,
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             columns = GridCells.Fixed(2),
             modifier = Modifier
                 .padding(20.dp, 0.dp)
-                .height(480.dp)
+                .height(520.dp)
         ) {
-            if (opcion_ventana) {
-                items(personatgesFiltrats) { personage ->
+            if(!mostrarFavoritos) {
+                items(personage) { personage ->
                     PersonageItem(
                         personage = personage,
                         navController = navController,
@@ -111,7 +83,8 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController, s
                 }
             }
         }
-        if (opcion_ventana) {
+
+        if (!mostrarFavoritos) {
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
