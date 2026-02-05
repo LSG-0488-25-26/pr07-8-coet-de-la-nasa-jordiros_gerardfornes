@@ -55,7 +55,6 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
             contentDescription = "titulo",
             modifier = Modifier.size(150.dp)
         )
-
         LazyVerticalGrid(
             state = gridState,
             verticalArrangement = Arrangement.spacedBy(8.dp),
