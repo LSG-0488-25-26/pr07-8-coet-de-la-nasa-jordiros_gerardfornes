@@ -8,11 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
+import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
 
 @Composable
-fun ScaffoldView(viewModel: ConsumoViewModel, navController: NavHostController){
+fun ScaffoldView(viewModel: ConsumoViewModel, navController: NavHostController, searchBarViewModel: SearchBarViewModel){
     Scaffold (
-        // AGREGAR SEARCHBAR
         bottomBar = { MyBottomBar(viewModel, navController) }
     )
     { paddingValues ->
@@ -21,7 +21,7 @@ fun ScaffoldView(viewModel: ConsumoViewModel, navController: NavHostController){
                 .fillMaxSize()
                 .padding(paddingValues)
         ){
-            MyAppNavHost(navController, viewModel)
+            MyAppNavHost(navController, viewModel, searchBarViewModel)
         }
     }
 }

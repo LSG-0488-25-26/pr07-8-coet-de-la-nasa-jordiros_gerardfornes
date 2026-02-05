@@ -9,17 +9,20 @@ import androidx.navigation.compose.rememberNavController
 import com.example.consumo_de_apis.ui.theme.Consumo_de_apisTheme
 import com.example.consumo_de_apis.view.ScaffoldView
 import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
+import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
+import kotlin.getValue
 
 class MainActivity : ComponentActivity() {
     val consumoViewModel: ConsumoViewModel by viewModels<ConsumoViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val searchBarViewModel by viewModels<SearchBarViewModel>()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             Consumo_de_apisTheme {
                 val navigationController = rememberNavController()
-                ScaffoldView(consumoViewModel, navigationController)
+                ScaffoldView(consumoViewModel, navigationController, searchBarViewModel)
             }
         }
     }

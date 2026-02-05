@@ -33,6 +33,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -45,9 +46,10 @@ import com.example.consumo_de_apis.nav.Routes
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.consumo_de_apis.R
+import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
 
 @Composable
-fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
+fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController, searchBarViewModel: SearchBarViewModel) {
     val personage = consumoViewModel.characters
     val favoritos by consumoViewModel.favoritos.collectAsState()
 
@@ -56,6 +58,14 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
     var color_personages = consumoViewModel.cambiarColor(opcion_ventana)
     var color_favorito = consumoViewModel.cambiarColor(!opcion_ventana)
 
+    val searchText by searchBarViewModel.searchedText.observeAsState("")
+
+    val personatgesFiltrats = if (searchText.isBlank()) {
+        personage
+    } else {
+        personage.filter { it.name.contains(searchText, ignoreCase = true) }
+    }
+
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
@@ -63,6 +73,7 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
             .background(Color(0xffF1F9FF))
             .fillMaxSize()
     ) {
+        MySearchBarView(searchBarViewModel)
         Image(
             painter = painterResource(id = R.drawable.titulo),
             contentDescription = "titulo",
@@ -104,7 +115,7 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
                 .height(480.dp)
         ) {
             if (opcion_ventana) {
-                items(personage) { personage ->
+                items(personatgesFiltrats) { personage ->
                     PersonageItem(
                         personage = personage,
                         navController = navController,

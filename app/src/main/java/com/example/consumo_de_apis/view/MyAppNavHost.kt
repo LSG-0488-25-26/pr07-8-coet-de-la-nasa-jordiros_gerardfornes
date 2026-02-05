@@ -10,15 +10,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.consumo_de_apis.nav.Routes
 import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
+import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
 
 @Composable
-fun MyAppNavHost(navController: NavController, consumoViewModel: ConsumoViewModel) {
+fun MyAppNavHost(navController: NavController, consumoViewModel: ConsumoViewModel, searchBarViewModel: SearchBarViewModel) {
     NavHost(
         navController = navController as NavHostController,
         startDestination = Routes.Main.route
     ) {
         composable(Routes.Main.route) {
-            MainView(consumoViewModel, navController)
+            MainView(consumoViewModel, navController, searchBarViewModel)
         }
         composable(
             route = Routes.Details.route,
