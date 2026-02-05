@@ -12,14 +12,16 @@ import com.example.consumo_de_apis.nav.Routes
 import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 
 @Composable
-fun MyAppNavHost(navController: NavController, consumoViewModel: ConsumoViewModel) {
+fun MyAppNavHost(
+    navController: NavController,
+    consumoViewModel: ConsumoViewModel
+) {
     NavHost(
         navController = navController as NavHostController,
         startDestination = Routes.Main.route
     ) {
-        composable(Routes.Main.route) {
-            MainView(consumoViewModel, navController)
-        }
+        composable(Routes.Main.route) { MainView(consumoViewModel, navController) }
+        composable(Routes.Favorites.route) { FavoritesView(consumoViewModel, navController) }
         composable(
             route = Routes.Details.route,
             arguments = listOf(

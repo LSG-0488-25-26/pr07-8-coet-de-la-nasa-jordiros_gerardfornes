@@ -14,10 +14,10 @@ import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 
 @Composable
 fun MyBottomBar(
-    myViewModel: ConsumoViewModel,
+    consumoViewModel: ConsumoViewModel,
     navigationController: NavHostController
 ) {
-    val bottomNavigationItems by myViewModel.bottomNavigationItems.observeAsState(emptyList())
+    val bottomNavigationItems by consumoViewModel.bottomNavigationItems.observeAsState(emptyList())
 
     NavigationBar(containerColor = Color.LightGray, contentColor = Color.Black) {
         val navBackEntry by navigationController.currentBackStackEntryAsState()

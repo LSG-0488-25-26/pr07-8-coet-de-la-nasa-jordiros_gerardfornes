@@ -10,9 +10,9 @@ import androidx.navigation.NavHostController
 import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 
 @Composable
-fun ScaffoldView(viewModel: ConsumoViewModel, navController: NavHostController){
+fun ScaffoldView(consumoViewModel: ConsumoViewModel, navController: NavHostController){
     Scaffold (
-        bottomBar = { MyBottomBar(viewModel, navController) }
+        bottomBar = { MyBottomBar(consumoViewModel, navController) }
     )
     { paddingValues ->
         Box(
@@ -20,7 +20,7 @@ fun ScaffoldView(viewModel: ConsumoViewModel, navController: NavHostController){
                 .fillMaxSize()
                 .padding(paddingValues)
         ){
-            MyAppNavHost(navController, viewModel)
+            MyAppNavHost(navController, consumoViewModel)
         }
     }
 }

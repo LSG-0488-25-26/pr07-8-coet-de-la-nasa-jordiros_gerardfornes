@@ -17,9 +17,17 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class ConsumoViewModel: ViewModel() {
+class ConsumoViewModel: ViewModel {
     private val _bottomNavigationItems = MutableLiveData<List<BottomNavigationScreens>>(emptyList())
     public val bottomNavigationItems: LiveData<List<BottomNavigationScreens>> = _bottomNavigationItems
+
+    constructor() : super() {
+        this._bottomNavigationItems.value = listOf(
+            BottomNavigationScreens.Main,
+            BottomNavigationScreens.Favorites
+        )
+    }
+
     private val repository = Repository()
     private var pagina_actual: Int = 1
 

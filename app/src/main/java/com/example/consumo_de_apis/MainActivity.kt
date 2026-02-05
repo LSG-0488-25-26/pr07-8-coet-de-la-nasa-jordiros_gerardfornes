@@ -11,15 +11,15 @@ import com.example.consumo_de_apis.view.ScaffoldView
 import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 
 class MainActivity : ComponentActivity() {
-    val consumoViewModel: ConsumoViewModel by viewModels<ConsumoViewModel>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        val consumoViewModel: ConsumoViewModel by viewModels<ConsumoViewModel>()
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             Consumo_de_apisTheme {
-                val navigationController = rememberNavController()
-                ScaffoldView(consumoViewModel, navigationController)
+                val navController = rememberNavController()
+                ScaffoldView(consumoViewModel, navController)
             }
         }
     }

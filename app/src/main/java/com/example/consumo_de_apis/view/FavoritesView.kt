@@ -11,10 +11,13 @@ import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 
 @Composable
-fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
-    val personage = consumoViewModel.characters
+fun FavoritesView(consumoViewModel: ConsumoViewModel, navController: NavController) {
+    val favoritos by consumoViewModel.favoritos.collectAsState()
+
     LazyVerticalGrid(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -23,7 +26,7 @@ fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController) {
             .padding(20.dp, 0.dp)
             .height(450.dp)
     ) {
-        items(personage) { personage ->
+        items(favoritos) { personage ->
             PersonageItem(
                 personage = personage,
                 navController = navController,

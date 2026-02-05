@@ -11,5 +11,5 @@ sealed class BottomNavigationScreens(
     val label: String
 ){
     object Main: BottomNavigationScreens(Routes.Main.route, Icons.Filled.Home, "Main")
-    object MFavorites: BottomNavigationScreens(Routes.Main.route, Icons.Filled.Favorite, "Favorites")
+    object Favorites: BottomNavigationScreens(Routes.Favorites.route, Icons.Filled.Favorite, "Favorites")
 }
