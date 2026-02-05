@@ -27,7 +27,6 @@ class ConsumoViewModel: ViewModel {
             BottomNavigationScreens.Favorites
         )
     }
-
     private val repository = Repository()
     private var pagina_actual: Int = 1
 
