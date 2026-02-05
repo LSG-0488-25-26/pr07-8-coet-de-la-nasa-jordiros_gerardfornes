@@ -3,6 +3,7 @@ package com.example.consumo_de_apis.view
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,7 +20,7 @@ fun MyBottomBar(
 ) {
     val bottomNavigationItems by consumoViewModel.bottomNavigationItems.observeAsState(emptyList())
 
-    NavigationBar(containerColor = Color.LightGray, contentColor = Color.Black) {
+    NavigationBar(containerColor = Color.Yellow, contentColor = Color.Black) {
         val navBackEntry by navigationController.currentBackStackEntryAsState()
         val currentRoute = navBackEntry?.destination?.route
 
@@ -28,6 +29,13 @@ fun MyBottomBar(
                 icon = { Icon(item.icon, contentDescription = item.label) },
                 label = { Text(item.label) },
                 selected = currentRoute == item.route,
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = Color.White,
+                    unselectedIconColor = Color.Gray,
+                    selectedTextColor = Color.Black,
+                    unselectedTextColor = Color.Gray,
+                    indicatorColor = Color(0xff9000ff)
+                ),
                 onClick = {
                     if (currentRoute != item.route) {
                         navigationController.navigate(item.route)

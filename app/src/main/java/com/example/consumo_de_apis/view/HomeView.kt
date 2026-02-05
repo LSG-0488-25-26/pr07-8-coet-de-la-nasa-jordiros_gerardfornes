@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,8 +36,12 @@ import com.example.consumo_de_apis.R
 fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, mostrarFavoritos: Boolean) {
     val personage = consumoViewModel.characters
     val favoritos by consumoViewModel.favoritos.collectAsState()
-
     var pagina by rememberSaveable { mutableStateOf(1) }
+    val gridState = rememberLazyGridState()
+
+    LaunchedEffect(pagina, mostrarFavoritos) {
+        gridState.scrollToItem(0)
+    }
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,6 +57,7 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
         )
 
         LazyVerticalGrid(
+            state = gridState,
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             columns = GridCells.Fixed(2),
