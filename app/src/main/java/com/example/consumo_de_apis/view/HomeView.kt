@@ -62,9 +62,7 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
         Image(
             painter = painterResource(id = R.drawable.titulo),
             contentDescription = "titulo",
-            modifier = Modifier
-                .size(150.dp)
-                .padding(0.dp)
+            modifier = Modifier.size(150.dp)
         )
         MySearchBarView(searchBarViewModel)
         LazyVerticalGrid(
