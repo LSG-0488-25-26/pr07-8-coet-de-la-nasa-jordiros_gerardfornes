@@ -15,7 +15,7 @@ data class Personage (
     var birthday: String?,
     var status: String,
     var description: String?,
-    var esFavorito: Boolean = false
+    var esFavorito: Boolean
 ) {
     val imageUrl: String
         get() = "https://cdn.thesimpsonsapi.com/500/character/$id.webp"

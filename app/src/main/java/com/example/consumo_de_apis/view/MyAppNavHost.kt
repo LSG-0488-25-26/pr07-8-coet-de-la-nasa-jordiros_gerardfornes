@@ -1,6 +1,6 @@
 package com.example.consumo_de_apis.view
 
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -18,8 +18,9 @@ fun MyAppNavHost(
 ) {
     NavHost(
         navController = navController as NavHostController,
-        startDestination = Routes.Main.route
+        startDestination = Routes.Home.route
     ) {
+        composable(Routes.Home.route) { HomeView(consumoViewModel, navController, false) }
         composable(Routes.Main.route) { MainView(consumoViewModel, navController) }
         composable(Routes.Favorites.route) { FavoritesView(consumoViewModel, navController) }
         composable(

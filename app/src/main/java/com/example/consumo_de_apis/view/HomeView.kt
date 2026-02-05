@@ -7,8 +7,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,16 +31,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import com.example.consumo_de_apis.R
+import com.example.consumo_de_apis.nav.BottomNavigationScreens
 
 @Composable
-fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController) {
+fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, mostrarFavoritos: Boolean) {
     val personage = consumoViewModel.characters
     val favoritos by consumoViewModel.favoritos.collectAsState()
 
     var pagina by rememberSaveable { mutableStateOf(1) }
-    var opcion_ventana by rememberSaveable { mutableStateOf(true) } // true: ventana personages || true: ventana favoritos
-    var color_personages = consumoViewModel.cambiarColor(opcion_ventana)
-    var color_favorito = consumoViewModel.cambiarColor(!opcion_ventana)
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -49,37 +52,35 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController) {
             contentDescription = "titulo",
             modifier = Modifier.size(150.dp)
         )
-        Row (
-            modifier = Modifier.padding(8.dp)
+
+        LazyVerticalGrid(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            columns = GridCells.Fixed(2),
+            modifier = Modifier
+                .padding(20.dp, 0.dp)
+                .height(520.dp)
         ) {
-            Button(
-                onClick = {
-                    opcion_ventana = true
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(color_personages),
-                    contentColor = Color.Black
-                )
-            ) {
-                Text(text = "Personages")
-            }
-            Spacer(Modifier.padding(20.dp))
-            Button(
-                onClick = {
-                    opcion_ventana = false
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(color_favorito),
-                    contentColor = Color.Black
-                )
-            ) {
-                Text(text = "Favoritos")
+            if(!mostrarFavoritos) {
+                items(personage) { personage ->
+                    PersonageItem(
+                        personage = personage,
+                        navController = navController,
+                        consumoViewModel = consumoViewModel
+                    )
+                }
+            } else {
+                items(favoritos) { personage ->
+                    PersonageItem(
+                        personage = personage,
+                        navController = navController,
+                        consumoViewModel = consumoViewModel
+                    )
+                }
             }
         }
 
-        // LAZY COMPONENTS
-
-        if (opcion_ventana) {
+        if (!mostrarFavoritos) {
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
