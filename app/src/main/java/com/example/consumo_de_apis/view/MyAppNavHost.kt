@@ -1,6 +1,5 @@
 package com.example.consumo_de_apis.view
 
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController

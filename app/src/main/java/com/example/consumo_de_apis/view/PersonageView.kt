@@ -43,9 +43,6 @@ fun PersonageItem(
     consumoViewModel: ConsumoViewModel
 ) {
     val colorStatus = consumoViewModel.getStatusColor(personage.status)
-    var imagen_favorito =
-        if (personage.esFavorito) { R.drawable.favorito_on }
-        else { R.drawable.favorito_off }
 
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -77,7 +74,12 @@ fun PersonageItem(
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Image(
-                    painter = painterResource(id = imagen_favorito),
+                    painter = painterResource(
+                        if (personage.esFavorito)
+                            R.drawable.favorito_on
+                        else
+                            R.drawable.favorito_off
+                    ),
                     contentDescription = "Favorito",
                     modifier = Modifier.size(30.dp)
                 )
