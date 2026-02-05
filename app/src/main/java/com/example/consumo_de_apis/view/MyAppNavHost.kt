@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.example.consumo_de_apis.nav.Routes
 import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
+import okhttp3.Route
 
 @Composable
 fun MyAppNavHost(navController: NavController, consumoViewModel: ConsumoViewModel, searchBarViewModel: SearchBarViewModel) {
@@ -17,9 +18,9 @@ fun MyAppNavHost(navController: NavController, consumoViewModel: ConsumoViewMode
         navController = navController as NavHostController,
         startDestination = Routes.Home.route
     ) {
-        composable(Routes.Main.route) {
-            MainView(consumoViewModel, navController, searchBarViewModel)
-        }
+        composable(Routes.Home.route) { HomeView(consumoViewModel, navController, false, searchBarViewModel) }
+        composable(Routes.Favorites.route) { FavoritesView(consumoViewModel, navController, searchBarViewModel) }
+        composable(Routes.Main.route) { MainView(consumoViewModel, navController, searchBarViewModel) }
         composable(
             route = Routes.Details.route,
             arguments = listOf(

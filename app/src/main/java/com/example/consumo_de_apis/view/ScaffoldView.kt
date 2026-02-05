@@ -11,7 +11,7 @@ import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
 
 @Composable
-fun ScaffoldView(viewModel: ConsumoViewModel, navController: NavHostController, searchBarViewModel: SearchBarViewModel){
+fun ScaffoldView(consumoViewModel: ConsumoViewModel, navController: NavHostController, searchBarViewModel: SearchBarViewModel){
     Scaffold (
         bottomBar = { MyBottomBar(consumoViewModel, navController) }
     )
@@ -21,7 +21,7 @@ fun ScaffoldView(viewModel: ConsumoViewModel, navController: NavHostController, 
                 .fillMaxSize()
                 .padding(paddingValues)
         ){
-            MyAppNavHost(navController, viewModel, searchBarViewModel)
+            MyAppNavHost(navController, consumoViewModel, searchBarViewModel)
         }
     }
 }

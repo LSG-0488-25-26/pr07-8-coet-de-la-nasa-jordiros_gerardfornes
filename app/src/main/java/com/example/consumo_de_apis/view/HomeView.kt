@@ -25,19 +25,28 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
 import com.example.consumo_de_apis.R
+import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
 
 @Composable
-fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, mostrarFavoritos: Boolean) {
+fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, mostrarFavoritos: Boolean, searchBarViewModel: SearchBarViewModel) {
     val personage = consumoViewModel.characters
     val favoritos by consumoViewModel.favoritos.collectAsState()
     var pagina by rememberSaveable { mutableStateOf(1) }
     val gridState = rememberLazyGridState()
+    val searchText by searchBarViewModel.searchedText.observeAsState("")
+
+    val personatgesFiltrats = if (searchText.isBlank()) {
+        personage
+    } else {
+        personage.filter { it.name.contains(searchText, ignoreCase = true) }
+    }
 
     LaunchedEffect(pagina, mostrarFavoritos) {
         gridState.scrollToItem(0)
@@ -53,8 +62,11 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
         Image(
             painter = painterResource(id = R.drawable.titulo),
             contentDescription = "titulo",
-            modifier = Modifier.size(150.dp)
+            modifier = Modifier
+                .size(150.dp)
+                .padding(0.dp)
         )
+        MySearchBarView(searchBarViewModel)
         LazyVerticalGrid(
             state = gridState,
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -62,10 +74,10 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
             columns = GridCells.Fixed(2),
             modifier = Modifier
                 .padding(20.dp, 0.dp)
-                .height(520.dp)
+                .height(390.dp)
         ) {
             if(!mostrarFavoritos) {
-                items(personage) { personage ->
+                items(personatgesFiltrats) { personage ->
                     PersonageItem(
                         personage = personage,
                         navController = navController,
