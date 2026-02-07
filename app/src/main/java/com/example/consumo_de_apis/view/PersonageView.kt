@@ -185,15 +185,28 @@ fun PersonageItem(
                         modifier = Modifier.size(30.dp)
                     )
                 }
-                // IMAGEN PERSONAGE
-                GlideImage(
-                    model = personage.imageUrl,
-                    contentDescription = personage.name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .padding(10.dp)
-                )
+
+                if (pantalla.width >= 1080.dp) {
+                    // IMAGEN PERSONAGE
+                    GlideImage(
+                        model = personage.imageUrl,
+                        contentDescription = personage.name,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(150.dp)
+                            .padding(10.dp)
+                    )
+                } else {
+                    // IMAGEN PERSONAGE
+                    GlideImage(
+                        model = personage.imageUrl,
+                        contentDescription = personage.name,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(100.dp)
+                            .padding(10.dp)
+                    )
+                }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp)

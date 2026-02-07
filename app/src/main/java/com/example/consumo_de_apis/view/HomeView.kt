@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -42,6 +41,7 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
     var pagina by rememberSaveable { mutableStateOf(1) }                 // NUMERO DE PAGINAS RECIBIDA DE LA API
     val gridState = rememberLazyGridState()                                     // ESTADO DEL SCROLL
     val searchText by searchBarViewModel.searchedText.observeAsState("") // TEXTO DE BUSQUEDA
+    var fillMaxHeight by rememberSaveable { mutableStateOf(0f) }
 
     val pantalla = getWindowInfo() // OBTENER ORIENTACION PANTALLA
 
@@ -51,6 +51,18 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
         personage
     } else {
         personage.filter { it.name.contains(searchText, ignoreCase = true) }
+    }
+
+    if (pantalla.orientation == ScreenOrientation.PORTRAIT) {
+        // HORIZONTAL
+        if (pantalla.width >= 1080.dp) {
+            fillMaxHeight = 1f // ORDENADOR
+        } else {
+            fillMaxHeight = 0.9f // MOBIL
+        }
+    } else {
+        // VERTICAL
+        fillMaxHeight = 0.7f // MOBIL
     }
 
     // ESTABLECER ESTADO SCROLL ARRIBA CUANDO CARGA VISTA
@@ -83,7 +95,7 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
                 columns = GridCells.Fixed(2),
                 modifier = Modifier
                     .padding(20.dp, 0.dp)
-                    .fillMaxHeight(0.9f)
+                    .fillMaxHeight(fillMaxHeight)
             ) {
                 // SI EL VALOR FAVORTIOS ES TRUE SOLO MOSTRARA A LOS PERSONAGES GUARDADOS COMO FAVORITOS
                 // SI NO MOSTRARA A TODOS LOS PERSONAGES DE LA API
@@ -187,7 +199,7 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
                 columns = GridCells.Fixed(5),
                 modifier = Modifier
                     .padding(20.dp, 0.dp)
-                    .fillMaxHeight(0.7f)
+                    .fillMaxHeight(fillMaxHeight)
             ) {
                 // SI EL VALOR FAVORTIOS ES TRUE SOLO MOSTRARA A LOS PERSONAGES GUARDADOS COMO FAVORITOS
                 // SI NO MOSTRARA A TODOS LOS PERSONAGES DE LA API
