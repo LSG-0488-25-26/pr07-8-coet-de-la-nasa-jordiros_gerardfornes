@@ -7,5 +7,5 @@ import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
 
 @Composable
 fun MainView(consumoViewModel: ConsumoViewModel, navController: NavController, searchBarViewModel: SearchBarViewModel) {
-    HomeView(consumoViewModel, navController, false, searchBarViewModel)
+    HomeView(consumoViewModel, navController, false, searchBarViewModel) // LLAMA A LA HOME PARA VER PERSONAGES DE LA API
 }

@@ -25,8 +25,10 @@ import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MySearchBarView(myViewModel: SearchBarViewModel) {
-    val searchedText by myViewModel.searchedText.observeAsState("")
-    val searchHistory by myViewModel.searchHistory.observeAsState(emptyList())
+    val searchedText by myViewModel.searchedText.observeAsState("")             // TEXTO DE BUSQUEDA
+    val searchHistory by myViewModel.searchHistory.observeAsState(emptyList())  // LISTA DE ULTIMAS BUSQUEDAS
+
+    // BARRA DE BUSQUEDA
     SearchBar(
         query = searchedText,
         onQueryChange = { myViewModel.onSearchTextChange(it) },
@@ -43,6 +45,7 @@ fun MySearchBarView(myViewModel: SearchBarViewModel) {
                 unfocusedIndicatorColor = Color.Transparent
             )
         ),
+        // ICONO DE LUPA
         leadingIcon = {
             Icon(
                 imageVector = Icons.Filled.Search,
@@ -60,6 +63,7 @@ fun MySearchBarView(myViewModel: SearchBarViewModel) {
                 )
             }
         },
+        // TEXTO POR DEFECTO
         placeholder = {
             Text(
                 "What are you looking for?",

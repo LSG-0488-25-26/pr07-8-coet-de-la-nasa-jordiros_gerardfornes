@@ -35,15 +35,17 @@ import com.example.consumo_de_apis.model.Personage
 import com.example.consumo_de_apis.nav.Routes
 import com.example.consumo_de_apis.viewmodel.ConsumoViewModel
 
-@OptIn(ExperimentalGlideComposeApi::class) // Necessari per utilitzar GlideImage
+// TARJETA PERSONAGE MOSTRADA EN LISTA
+@OptIn(ExperimentalGlideComposeApi::class) // NECESARIO PARA UTILIZAR GLIDEIMAGE
 @Composable
 fun PersonageItem(
     personage: Personage,
     navController: NavController,
     consumoViewModel: ConsumoViewModel
 ) {
-    val colorStatus = consumoViewModel.getStatusColor(personage.status)
+    val colorStatus = consumoViewModel.getStatusColor(personage.status) // COLOR DEL ESTADO DE PERSONAGE
 
+    // TARJETA PERSONAGE
     Card(
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(2.dp, Color(0xffc3c3c3)),
@@ -61,6 +63,7 @@ fun PersonageItem(
                 .background(color = Color.White)
                 .padding(10.dp)
         ) {
+            // BOTON PARA ALTERAR FAVORITO
             Button(
                 onClick = {
                     consumoViewModel.cambiarFavorito(personage)
@@ -73,6 +76,7 @@ fun PersonageItem(
                 contentPadding = PaddingValues(0.dp),
                 modifier = Modifier.align(Alignment.End)
             ) {
+                // IMAGEN ESTRELLA (FAVORTIO = AMARILLO, NO FAVORITO = GRIS TRANSPARENTE)
                 Image(
                     painter = painterResource(
                         if (personage.esFavorito)
@@ -84,6 +88,7 @@ fun PersonageItem(
                     modifier = Modifier.size(30.dp)
                 )
             }
+            // IMAGEN PERSONAGE
             GlideImage(
                 model = personage.imageUrl,
                 contentDescription = personage.name,
@@ -96,12 +101,14 @@ fun PersonageItem(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                // NOMBRE PERSONAGE
                 Text(
                     color = Color.Black,
                     text = personage.name,
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                 )
+                // OCUPACION PERSONAGE
                 Text(
                     color = Color.Gray,
                     text = personage.occupation,
@@ -113,11 +120,13 @@ fun PersonageItem(
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
+                    // EDAD PERSONAGE
                     Text(
                         color = Color.Black,
                         text = "Edad: " + personage.age,
                         fontSize = 15.sp,
                     )
+                    // ESTADO PERSONAGE
                     Text(
                         color = Color(colorStatus),
                         text = personage.status,

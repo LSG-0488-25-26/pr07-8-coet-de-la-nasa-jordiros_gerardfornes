@@ -36,18 +36,21 @@ import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
 
 @Composable
 fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, mostrarFavoritos: Boolean, searchBarViewModel: SearchBarViewModel) {
-    val personage = consumoViewModel.characters
-    val favoritos by consumoViewModel.favoritos.collectAsState()
-    var pagina by rememberSaveable { mutableStateOf(1) }
-    val gridState = rememberLazyGridState()
-    val searchText by searchBarViewModel.searchedText.observeAsState("")
+    val personage = consumoViewModel.characters                                 // MODELO PERSONAGE
+    val favoritos by consumoViewModel.favoritos.collectAsState()                // PERSONAGES FAVORITOS
+    var pagina by rememberSaveable { mutableStateOf(1) }                 // NUMERO DE PAGINAS RECIBIDA DE LA API
+    val gridState = rememberLazyGridState()                                     // ESTADO DEL SCROLL
+    val searchText by searchBarViewModel.searchedText.observeAsState("") // TEXTO DE BUSQUEDA
 
+    // FILTRO DE BUSQUEDA DE PERSONAGES
+    // SOLO FUNCIONA EN LA PAGINA DONDE SE ENCUENTRA EL USUARIO
     val personatgesFiltrats = if (searchText.isBlank()) {
         personage
     } else {
         personage.filter { it.name.contains(searchText, ignoreCase = true) }
     }
 
+    // ESTABLECER ESTADO SCROLL ARRIBA CUANDO CARGA VISTA
     LaunchedEffect(pagina, mostrarFavoritos) {
         gridState.scrollToItem(0)
     }
@@ -59,12 +62,15 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
             .background(Color(0xffF1F9FF))
             .fillMaxSize()
     ) {
+        // IMAGEN TITULO
         Image(
             painter = painterResource(id = R.drawable.titulo),
             contentDescription = "titulo",
             modifier = Modifier.size(150.dp)
         )
-        MySearchBarView(searchBarViewModel)
+        MySearchBarView(searchBarViewModel) // BARRA DE BUSQUEDA
+
+        // TARJETA PERSONAGE CON INFORMACIÓN BÁSICA
         LazyVerticalGrid(
             state = gridState,
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -74,6 +80,8 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
                 .padding(20.dp, 0.dp)
                 .height(390.dp)
         ) {
+            // SI EL VALOR FAVORTIOS ES TRUE SOLO MOSTRARA A LOS PERSONAGES GUARDADOS COMO FAVORITOS
+            // SI NO MOSTRARA A TODOS LOS PERSONAGES DE LA API
             if(!mostrarFavoritos) {
                 items(personatgesFiltrats) { personage ->
                     PersonageItem(
@@ -93,6 +101,7 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
             }
         }
 
+        // MOSTRAR BOTONES DE PAGINAS SI EL ESTADO NO ES FAVORITO
         if (!mostrarFavoritos) {
             Row(
                 horizontalArrangement = Arrangement.Center,
@@ -101,6 +110,7 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
                     .fillMaxSize()
                     .padding(10.dp)
             ) {
+                // IR A PRIMERA PAGINA
                 Button(
                     onClick = { pagina = consumoViewModel.irAPrimeraPagina() },
                     colors = ButtonDefaults.buttonColors(
@@ -111,6 +121,7 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
                 ) {
                     Text(text = "<<")
                 }
+                // IR A PAGINA ANTERIOR
                 Button(
                     onClick = { pagina = consumoViewModel.decrementarPagina(pagina) },
                     colors = ButtonDefaults.buttonColors(
@@ -120,12 +131,14 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
                 ) {
                     Text(text = "<")
                 }
+                // NUMERO DE PAGINA ACTUAL / NUMERO DE PAGINAS TOTALES
                 Text(
                     text = pagina.toString() + "/${consumoViewModel.maxPaginas}",
                     color = Color.Black,
                     modifier = Modifier
                         .padding(horizontal = 30.dp)
                 )
+                // IR A PAGINA SIGUIENTE
                 Button(
                     onClick = { pagina = consumoViewModel.ingrementarPagina(pagina) },
                     colors = ButtonDefaults.buttonColors(
@@ -135,6 +148,7 @@ fun HomeView(consumoViewModel: ConsumoViewModel, navController: NavController, m
                 ) {
                     Text(text = ">")
                 }
+                // IR A ULTIMA PAGINA
                 Button(
                     onClick = { pagina = consumoViewModel.irAUltimaPagina() },
                     colors = ButtonDefaults.buttonColors(

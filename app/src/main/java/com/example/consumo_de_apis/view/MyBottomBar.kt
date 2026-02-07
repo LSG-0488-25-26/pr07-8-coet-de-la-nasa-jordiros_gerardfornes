@@ -24,6 +24,7 @@ fun MyBottomBar(
         val navBackEntry by navigationController.currentBackStackEntryAsState()
         val currentRoute = navBackEntry?.destination?.route
 
+        // GENERAR BOTONES GENERADOS EN NAVIGATION BAR
         bottomNavigationItems.forEach { item ->
             NavigationBarItem(
                 icon = { Icon(item.icon, contentDescription = item.label) },

@@ -7,5 +7,5 @@ import com.example.consumo_de_apis.viewmodel.SearchBarViewModel
 
 @Composable
 fun FavoritesView(consumoViewModel: ConsumoViewModel, navController: NavController, searchBarViewModel: SearchBarViewModel) {
-    HomeView(consumoViewModel, navController, true, searchBarViewModel)
+    HomeView(consumoViewModel, navController, true, searchBarViewModel) // LLAMA A LA HOME PARA VER PERSONAGES FAVORITOS
 }

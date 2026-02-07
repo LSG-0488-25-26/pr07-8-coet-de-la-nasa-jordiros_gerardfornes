@@ -21,7 +21,7 @@ fun ScaffoldView(consumoViewModel: ConsumoViewModel, navController: NavHostContr
                 .fillMaxSize()
                 .padding(paddingValues)
         ){
-            MyAppNavHost(navController, consumoViewModel, searchBarViewModel)
+            MyAppNavHost(navController, consumoViewModel, searchBarViewModel) // LLAMAR NAV HOST PARA GENERAR COMPOSABLES
         }
     }
 }

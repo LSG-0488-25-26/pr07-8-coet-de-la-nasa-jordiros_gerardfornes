@@ -31,19 +31,23 @@ import androidx.compose.runtime.LaunchedEffect
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun DetailsView(id: Int, viewModel: ConsumoViewModel) {
+    val scrollState = rememberScrollState()
 
+    // RETORNAR SCROLL A LA PARTE SUPERIOR
     LaunchedEffect(id) {
         viewModel.fetchCharacterDetails(id)
+        scrollState.scrollTo(0)
     }
 
-    val personage = viewModel.personageDetail
+    val personage = viewModel.personageDetail // MODELO PERSONAGE
 
+    // SI NO HAY DATOS MUESTRA UN MENSAGE DE CARGA
     if (personage == null) {
         Text("Cargando datos...", modifier = Modifier.padding(20.dp))
         return
     }
 
-    val colorStatus = viewModel.getStatusColor(personage.status)
+    val colorStatus = viewModel.getStatusColor(personage.status) // DETERMINA EL COLOR DE STATUS (VERDE = VIVO, ROJO = MUERTO)
 
     Column(
         modifier = Modifier
@@ -65,6 +69,7 @@ fun DetailsView(id: Int, viewModel: ConsumoViewModel) {
                     .padding(10.dp)
                     .fillMaxSize()
             ) {
+                // IMAGEN PERSONAGE
                 GlideImage(
                     model = personage.imageUrl,
                     contentDescription = personage.name,
@@ -78,12 +83,14 @@ fun DetailsView(id: Int, viewModel: ConsumoViewModel) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
+                    // NOMBRE PERSONAGE
                     Text(
                         color = Color.Black,
                         text = personage.name,
                         fontSize = 30.sp,
                         textAlign = TextAlign.Center,
                     )
+                    // OCUPACIÓN PERSONAGE
                     Text(
                         color = Color.Gray,
                         text = personage.occupation,
@@ -102,22 +109,26 @@ fun DetailsView(id: Int, viewModel: ConsumoViewModel) {
                             .fillMaxSize()
                             .padding(horizontal = 10.dp)
                     ) {
+                        // EDAD PERSONAGE
                         Text(
                             color = Color.Black,
                             text = "Edad: " + personage.age,
                             fontSize = 20.sp,
                         )
+                        // GENERO PERSONAGE
                         Text(
                             color = Color.Black,
                             text = "Genero: " + personage.gender,
                             fontSize = 20.sp,
                         )
+                        // CUMPLEAÑOS PERSONAGE
                         Text(
                             color = Color.Black,
                             text = "Cumpleaños: " + personage.birthday,
                             fontSize = 20.sp,
                         )
                         Row {
+                            // ESTADO PERSONAGE (VIVO O MUERTO)
                             Text(
                                 color = Color.Black,
                                 text = "Estado: ",
@@ -129,6 +140,7 @@ fun DetailsView(id: Int, viewModel: ConsumoViewModel) {
                                 fontSize = 20.sp,
                             )
                         }
+                        // DESCRIPCIÓN PERSONAGE
                         Text(
                             color = Color.Black,
                             text = "Descripción: " + personage.description,
