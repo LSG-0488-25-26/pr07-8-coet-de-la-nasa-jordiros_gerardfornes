@@ -45,93 +45,191 @@ fun PersonageItem(
 ) {
     val colorStatus = consumoViewModel.getStatusColor(personage.status) // COLOR DEL ESTADO DE PERSONAGE
 
-    // TARJETA PERSONAGE
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(2.dp, Color(0xffc3c3c3)),
-        modifier = Modifier
-            .clickable {
-                navController.navigate(Routes.Details.createRoute(personage.id))
-            }
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
+    val pantalla = getWindowInfo() // OBTENER ORIENTACION PANTALLA
+
+    if (pantalla.orientation == ScreenOrientation.PORTRAIT) {
+        // HORIENTACION VERTICAL
+        // TARJETA PERSONAGE
+        Card(
+            shape = RoundedCornerShape(16.dp),
+            border = BorderStroke(2.dp, Color(0xffc3c3c3)),
             modifier = Modifier
-                .height(375.dp)
-                .fillMaxWidth()
-                .background(color = Color.White)
-                .padding(10.dp)
+                .clickable {
+                    navController.navigate(Routes.Details.createRoute(personage.id))
+                }
         ) {
-            // BOTON PARA ALTERAR FAVORITO
-            Button(
-                onClick = {
-                    consumoViewModel.cambiarFavorito(personage)
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = Color.Transparent
-                ),
-                elevation = ButtonDefaults.buttonElevation(0.dp),
-                contentPadding = PaddingValues(0.dp),
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                // IMAGEN ESTRELLA (FAVORTIO = AMARILLO, NO FAVORITO = GRIS TRANSPARENTE)
-                Image(
-                    painter = painterResource(
-                        if (personage.esFavorito)
-                            R.drawable.favorito_on
-                        else
-                            R.drawable.favorito_off
-                    ),
-                    contentDescription = "Favorito",
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-            // IMAGEN PERSONAGE
-            GlideImage(
-                model = personage.imageUrl,
-                contentDescription = personage.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(150.dp)
-                    .padding(10.dp)
-            )
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.Top,
+                modifier = Modifier
+                    .height(375.dp)
+                    .fillMaxWidth()
+                    .background(color = Color.White)
+                    .padding(10.dp)
             ) {
-                // NOMBRE PERSONAGE
-                Text(
-                    color = Color.Black,
-                    text = personage.name,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center,
-                )
-                // OCUPACION PERSONAGE
-                Text(
-                    color = Color.Gray,
-                    text = personage.occupation,
-                    fontSize = 10.sp,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 16.sp,
-                    modifier = Modifier.width(120.dp)
-                )
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                // BOTON PARA ALTERAR FAVORITO
+                Button(
+                    onClick = {
+                        consumoViewModel.cambiarFavorito(personage)
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = Color.Transparent
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(0.dp),
+                    contentPadding = PaddingValues(0.dp),
+                    modifier = Modifier.align(Alignment.End)
                 ) {
-                    // EDAD PERSONAGE
+                    // IMAGEN ESTRELLA (FAVORTIO = AMARILLO, NO FAVORITO = GRIS TRANSPARENTE)
+                    Image(
+                        painter = painterResource(
+                            if (personage.esFavorito)
+                                R.drawable.favorito_on
+                            else
+                                R.drawable.favorito_off
+                        ),
+                        contentDescription = "Favorito",
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+                // IMAGEN PERSONAGE
+                GlideImage(
+                    model = personage.imageUrl,
+                    contentDescription = personage.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(150.dp)
+                        .padding(10.dp)
+                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    // NOMBRE PERSONAGE
                     Text(
                         color = Color.Black,
-                        text = "Edad: " + personage.age,
-                        fontSize = 15.sp,
+                        text = personage.name,
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
                     )
-                    // ESTADO PERSONAGE
+                    // OCUPACON PERSONAGE
                     Text(
-                        color = Color(colorStatus),
-                        text = personage.status,
-                        fontSize = 15.sp
+                        color = Color.Gray,
+                        text = personage.occupation,
+                        fontSize = 10.sp,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 16.sp,
+                        modifier = Modifier.width(120.dp)
                     )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        // EDAD PERSONAGE
+                        Text(
+                            color = Color.Black,
+                            text = "Edad: " + personage.age,
+                            fontSize = 15.sp,
+                        )
+                        // ESTADO PESONAGE (VIVO O MUERTO)
+                        Text(
+                            color = Color(colorStatus),
+                            text = personage.status,
+                            fontSize = 15.sp
+                        )
+                    }
+                }
+            }
+        }
+    } else {
+        // HORIENTACION HORIZONTAL
+        // TARJETA PERSONAGE
+        Card(
+            shape = RoundedCornerShape(16.dp),
+            border = BorderStroke(2.dp, Color(0xffc3c3c3)),
+            modifier = Modifier
+                .clickable {
+                    navController.navigate(Routes.Details.createRoute(personage.id))
+                }
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top,
+                modifier = Modifier
+                    .height(330.dp)
+                    .fillMaxWidth()
+                    .background(color = Color.White)
+                    .padding(10.dp)
+            ) {
+                // BOTON PARA ALTERAR FAVORITO
+                Button(
+                    onClick = {
+                        consumoViewModel.cambiarFavorito(personage)
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = Color.Transparent
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(0.dp),
+                    contentPadding = PaddingValues(0.dp),
+                    modifier = Modifier.align(Alignment.End)
+                ) {
+                    // IMAGEN ESTRELLA (FAVORTIO = AMARILLO, NO FAVORITO = GRIS TRANSPARENTE)
+                    Image(
+                        painter = painterResource(
+                            if (personage.esFavorito)
+                                R.drawable.favorito_on
+                            else
+                                R.drawable.favorito_off
+                        ),
+                        contentDescription = "Favorito",
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+                // IMAGEN PERSONAGE
+                GlideImage(
+                    model = personage.imageUrl,
+                    contentDescription = personage.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(10.dp)
+                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    // NOMBRE PERSONAGE
+                    Text(
+                        color = Color.Black,
+                        text = personage.name,
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                    // OCUPACON PERSONAGE
+                    Text(
+                        color = Color.Gray,
+                        text = personage.occupation,
+                        fontSize = 10.sp,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 16.sp,
+                        modifier = Modifier.width(120.dp)
+                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        // EDAD PERSONAGE
+                        Text(
+                            color = Color.Black,
+                            text = "Edad: " + personage.age,
+                            fontSize = 15.sp,
+                        )
+                        // ESTADO PESONAGE (VIVO O MUERTO)
+                        Text(
+                            color = Color(colorStatus),
+                            text = personage.status,
+                            fontSize = 15.sp
+                        )
+                    }
                 }
             }
         }

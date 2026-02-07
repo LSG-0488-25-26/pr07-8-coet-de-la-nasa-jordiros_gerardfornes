@@ -46,6 +46,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation(libs.androidx.compose.runtime.livedata)
+    implementation(libs.androidx.window)
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

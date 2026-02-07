@@ -72,7 +72,7 @@ fun MySearchBarView(myViewModel: SearchBarViewModel) {
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(10.dp)
             .clip(RoundedCornerShape(16.dp))
     ) {}
 }

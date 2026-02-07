@@ -49,103 +49,216 @@ fun DetailsView(id: Int, viewModel: ConsumoViewModel) {
 
     val colorStatus = viewModel.getStatusColor(personage.status) // DETERMINA EL COLOR DE STATUS (VERDE = VIVO, ROJO = MUERTO)
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xffF1F9FF))
-    ) {
-        Card(
-            shape = RoundedCornerShape(16.dp),
-            border = BorderStroke(2.dp, Color(0xffc3c3c3)),
+    val pantalla = getWindowInfo() // OBTENER ORIENTACION PANTALLA
+
+    if (pantalla.orientation == ScreenOrientation.PORTRAIT) {
+        // ORIENTACION VERTICAL
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(20.dp)
+                .background(Color(0xffF1F9FF))
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top,
+            Card(
+                shape = RoundedCornerShape(16.dp),
+                border = BorderStroke(2.dp, Color(0xffc3c3c3)),
                 modifier = Modifier
-                    .background(color = Color.White)
-                    .padding(10.dp)
                     .fillMaxSize()
+                    .padding(20.dp)
             ) {
-                // IMAGEN PERSONAGE
-                GlideImage(
-                    model = personage.imageUrl,
-                    contentDescription = personage.name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(300.dp)
-                        .padding(10.dp)
-                )
-
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                    verticalArrangement = Arrangement.Top,
+                    modifier = Modifier
+                        .background(color = Color.White)
+                        .padding(10.dp)
+                        .fillMaxSize()
                 ) {
-                    // NOMBRE PERSONAGE
-                    Text(
-                        color = Color.Black,
-                        text = personage.name,
-                        fontSize = 30.sp,
-                        textAlign = TextAlign.Center,
-                    )
-                    // OCUPACIÓN PERSONAGE
-                    Text(
-                        color = Color.Gray,
-                        text = personage.occupation,
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Center
-                    )
-                }
-                Spacer(modifier = Modifier.padding(10.dp))
-                Column(
-                    modifier = Modifier.verticalScroll(rememberScrollState())
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
-                        horizontalAlignment = Alignment.Start,
+                    // IMAGEN PERSONAGE
+                    GlideImage(
+                        model = personage.imageUrl,
+                        contentDescription = personage.name,
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 10.dp)
+                            .size(300.dp)
+                            .padding(10.dp)
+                    )
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        // EDAD PERSONAGE
+                        // NOMBRE PERSONAGE
                         Text(
                             color = Color.Black,
-                            text = "Edad: " + personage.age,
-                            fontSize = 20.sp,
+                            text = personage.name,
+                            fontSize = 30.sp,
+                            textAlign = TextAlign.Center,
                         )
-                        // GENERO PERSONAGE
+                        // OCUPACIÓN PERSONAGE
                         Text(
-                            color = Color.Black,
-                            text = "Genero: " + personage.gender,
+                            color = Color.Gray,
+                            text = personage.occupation,
                             fontSize = 20.sp,
+                            textAlign = TextAlign.Center
                         )
-                        // CUMPLEAÑOS PERSONAGE
-                        Text(
-                            color = Color.Black,
-                            text = "Cumpleaños: " + personage.birthday,
-                            fontSize = 20.sp,
-                        )
-                        Row {
-                            // ESTADO PERSONAGE (VIVO O MUERTO)
+                    }
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    Column(
+                        modifier = Modifier.verticalScroll(rememberScrollState())
+                    ) {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            horizontalAlignment = Alignment.Start,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 10.dp)
+                        ) {
+                            // EDAD PERSONAGE
                             Text(
                                 color = Color.Black,
-                                text = "Estado: ",
+                                text = "Edad: " + personage.age,
                                 fontSize = 20.sp,
                             )
+                            // GENERO PERSONAGE
                             Text(
-                                color = Color(colorStatus),
-                                text = personage.status,
+                                color = Color.Black,
+                                text = "Genero: " + personage.gender,
+                                fontSize = 20.sp,
+                            )
+                            // CUMPLEAÑOS PERSONAGE
+                            Text(
+                                color = Color.Black,
+                                text = "Cumpleaños: " + personage.birthday,
+                                fontSize = 20.sp,
+                            )
+                            Row {
+                                // ESTADO PERSONAGE (VIVO O MUERTO)
+                                Text(
+                                    color = Color.Black,
+                                    text = "Estado: ",
+                                    fontSize = 20.sp,
+                                )
+                                Text(
+                                    color = Color(colorStatus),
+                                    text = personage.status,
+                                    fontSize = 20.sp,
+                                )
+                            }
+                            // DESCRIPCIÓN PERSONAGE
+                            Text(
+                                color = Color.Black,
+                                text = "Descripción: " + personage.description,
                                 fontSize = 20.sp,
                             )
                         }
-                        // DESCRIPCIÓN PERSONAGE
-                        Text(
-                            color = Color.Black,
-                            text = "Descripción: " + personage.description,
-                            fontSize = 20.sp,
-                        )
+                    }
+                }
+            }
+        }
+    } else {
+        // ORIENTACION HORIZONTAL
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xffF1F9FF))
+        ) {
+            Card(
+                shape = RoundedCornerShape(16.dp),
+                border = BorderStroke(2.dp, Color(0xffc3c3c3)),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp)
+            ) {
+                Row (
+                    modifier = Modifier
+                        .background(color = Color.White)
+                ) {
+                    // IMAGEN PERSONAGE
+                    GlideImage(
+                        model = personage.imageUrl,
+                        contentDescription = personage.name,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(200.dp)
+                            .padding(10.dp)
+                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Top,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .fillMaxSize()
+                    ) {
+
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            // NOMBRE PERSONAGE
+                            Text(
+                                color = Color.Black,
+                                text = personage.name,
+                                fontSize = 30.sp,
+                                textAlign = TextAlign.Center,
+                            )
+                            // OCUPACIÓN PERSONAGE
+                            Text(
+                                color = Color.Gray,
+                                text = personage.occupation,
+                                fontSize = 20.sp,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                        Spacer(modifier = Modifier.padding(10.dp))
+                        Column(
+                            modifier = Modifier.verticalScroll(rememberScrollState())
+                        ) {
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(10.dp),
+                                horizontalAlignment = Alignment.Start,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(horizontal = 10.dp)
+                            ) {
+                                // EDAD PERSONAGE
+                                Text(
+                                    color = Color.Black,
+                                    text = "Edad: " + personage.age,
+                                    fontSize = 20.sp,
+                                )
+                                // GENERO PERSONAGE
+                                Text(
+                                    color = Color.Black,
+                                    text = "Genero: " + personage.gender,
+                                    fontSize = 20.sp,
+                                )
+                                // CUMPLEAÑOS PERSONAGE
+                                Text(
+                                    color = Color.Black,
+                                    text = "Cumpleaños: " + personage.birthday,
+                                    fontSize = 20.sp,
+                                )
+                                Row {
+                                    // ESTADO PERSONAGE (VIVO O MUERTO)
+                                    Text(
+                                        color = Color.Black,
+                                        text = "Estado: ",
+                                        fontSize = 20.sp,
+                                    )
+                                    Text(
+                                        color = Color(colorStatus),
+                                        text = personage.status,
+                                        fontSize = 20.sp,
+                                    )
+                                }
+                                // DESCRIPCIÓN PERSONAGE
+                                Text(
+                                    color = Color.Black,
+                                    text = "Descripción: " + personage.description,
+                                    fontSize = 20.sp,
+                                )
+                            }
+                        }
                     }
                 }
             }
