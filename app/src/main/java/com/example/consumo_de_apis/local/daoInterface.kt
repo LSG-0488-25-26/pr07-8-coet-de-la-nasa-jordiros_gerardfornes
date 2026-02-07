@@ -10,12 +10,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PersonageDao {
+    // OBTENER PERSONAGES QUE SEAN FAVORITOS
     @Query("SELECT * FROM personages WHERE esFavorito = 1")
     fun getFavoritos(): Flow<List<Personage>>
 
+    // GUARDAR PERSONAGE A FAVORITOS
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun setPersonageFavorito(personage: Personage)
 
+    // ELIMINAR PERSONAGE DE FAVORITOS
     @Delete
     suspend fun deletePersonageFavorito(personage: Personage)
 }

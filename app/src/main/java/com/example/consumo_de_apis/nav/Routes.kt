@@ -1,5 +1,6 @@
 package com.example.consumo_de_apis.nav
 
+// ESTABLECER RUTAS A VISTAS
 sealed class Routes(val route: String) {
     object Home : Routes("homeview")
     object Main : Routes("mainview")

@@ -17,6 +17,7 @@ data class Personage (
     var description: String?,
     var esFavorito: Boolean
 ) {
+    // OBTENER IMAGEN DE PERSONAGE MEDIANTE API
     val imageUrl: String
         get() = "https://cdn.thesimpsonsapi.com/500/character/$id.webp"
 }
